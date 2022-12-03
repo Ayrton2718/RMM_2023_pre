@@ -1,0 +1,10 @@
+.DS_Store
+*.dSYM
+.vscode/configurationCache.log
+.vscode/dryrun.log
+.vscode/targets.log
+
+build
+
+log/now_log
+log/archive

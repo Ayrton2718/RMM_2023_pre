@@ -1,0 +1,105 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "task_complie",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "-j", "4",
+                "-f",
+                "${workspaceFolder}/Makefile",
+                "${input:BUILD_MODE}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "コンパイラ: /usr/bin/g++"
+        },
+        {
+            "label": "task_compile_arm32",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "run",
+                "--rm",
+                "-v", "${workspaceFolder}:/${workspaceFolderBasename}",
+                "-it", "raspi-cross:2.2",
+                "bash", "-c", "\"cd /${workspaceFolderBasename} && make -j 4 -f /${workspaceFolderBasename}/Makefile SUBARCH=aarch32 CC=arm-linux-gnueabihf-gcc CPP=arm-linux-gnueabihf-g++ LK=arm-linux-gnueabihf-g++ BUILD_MODE=Release\""
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Arm 32bit cross compiler"
+        },
+        {
+            "label": "task_compile_arm64",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "run",
+                "--rm",
+                "-v", "${workspaceFolder}:/${workspaceFolderBasename}",
+                "-it", "raspi-cross:arm64.v1",
+                "bash", "-c", "\"cd /${workspaceFolderBasename} && make -j 4 -f /${workspaceFolderBasename}/Makefile CROSS_COMPILE=Rpi4B BUILD_MODE=Release\""
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Arm 64bit cross compiler"
+        },
+        {
+            "label": "task_deploy_raspi",
+            "dependsOn":["task_compile_arm64"],
+            "type": "shell",
+            "command": "rsync",
+            "args": [
+                "-avze", "ssh", "--include", "'run.sh'", "--include", "'log.sh'", "--include", "'build'", "--include", "'/build/main.out'", "--exclude", "'*'", "--delete", "${workspaceFolder}/.", "pi@${input:RASPI_HOST}:~/RMMDeploy"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Deploy RobotRMM2022"
+        },
+        {
+            "label": "pre_debug",
+            "dependsOn":["task_complie"],
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "run.sh",
+                "-ne"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "prepair log"
+        }
+    ],
+
+    "inputs": [
+        {
+            "id": "BUILD_MODE",
+            "description": "Is enagle gdb.",
+            "default": "BUILD_MODE=Debug",
+            "options": [
+                "BUILD_MODE=Debug",
+                "BUILD_MODE=Release"
+            ],
+            "type": "pickString"
+        },
+        {
+            "id": "RASPI_HOST",
+            "description": "Raspberry pi hostname.",
+            "default": "127.0.0.1",
+            "type": "promptString"
+        }
+    ]
+}

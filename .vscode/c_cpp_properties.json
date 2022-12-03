@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/lib/std_api/inc/**",
+                "${workspaceFolder}/lib/object_parser/inc/**",
+                "${workspaceFolder}/lib/collection_class/inc/**",
+                "${workspaceFolder}/lib/thread_comm/inc/**",
+                "${workspaceFolder}/lib/process_comm/inc/**",
+                "${workspaceFolder}/pkg/can_smbus/inc/**",
+                "${workspaceFolder}/pkg/odom_driver/inc/**",
+                "${workspaceFolder}/pkg/robomas/inc/**",
+                "${workspaceFolder}/pkg/controller_client/inc/**"
+            ],
+            "defines": [
+            ],
+            "macFrameworkPath": []
+            // "compilerPath": "/usr/local/bin/gcc-11",
+            // "cStandard": "gnu17",
+            // "cppStandard": "gnu++17",
+            // "intelliSenseMode": "macos-gcc-x64"
+        }
+    ],
+    "version": 4
+}

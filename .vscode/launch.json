@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "RobotRMM - run",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/main.out",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "linux": {
+                "MIMode": "gdb",
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "preLaunchTask":"pre_debug",
+        }
+    ]
+}
