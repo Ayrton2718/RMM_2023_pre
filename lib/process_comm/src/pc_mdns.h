@@ -2,6 +2,7 @@
 #define PC_MDNS_H
 
 #include "pc_type.h"
+#include <std_api/std_api.h>
 
 #ifdef __cplusplus
 extern "C" {

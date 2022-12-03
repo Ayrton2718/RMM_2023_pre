@@ -4,8 +4,6 @@
 // libs
 #include <std_api/std_api.h>
 #include <object_parser/object_parser.h>
-#include <collection_class/collection_class.h>
-#include <thread_comm/thread_comm.h>
 #include <process_comm/process_comm.h>
 
 // for c++

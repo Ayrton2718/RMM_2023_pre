@@ -87,16 +87,18 @@ struct Robomas_motor_info_t
     struct sockaddr_in rpm_send_addr[4];
     struct sockaddr_in conf_send_addr[4];
 
-    CC_obj sensors[4];
+    pthread_mutex_t         sensors_locker;
+    struct RM_ethSensData_t sensors[4][8];
 
-    CC_obj is_safety;
+    SABool_t        is_safety;
+    pthread_mutex_t is_safety_locker;
 };
 
 static struct Robomas_motor_info_t g_obj;
 
 
-void RMM3508_sensThread(void);
-void RMM3508_safetyThread(void);
+void* RMM3508_sensThread(void* arg);
+void* RMM3508_safetyThread(void* arg);
 
 const char* RMM3508_createIp(size_t gw_i)
 {
@@ -124,15 +126,21 @@ void RMM3508_init(size_t gw_count)
         g_obj.conf_send_addr[gw_i].sin_port = htons(ROBOMAS_MOTOR_CONF_SEND_PORT);
         g_obj.conf_send_addr[gw_i].sin_addr.s_addr = inet_addr(RMM3508_createIp(gw_i));
 
-        g_obj.sensors[gw_i] = CCStruct_create(NULL, sizeof(struct RM_ethSensData_t) * 8);
-        CCObject_enableThreadSafe(g_obj.sensors[gw_i]);
+        pthread_mutex_init(&g_obj.sensors_locker, NULL);
+        // g_obj.sensors[gw_i][0];
+        for(size_t i = 0; i < 8; i++)
+        {
+            memset(&g_obj.sensors[gw_i][0], 0x00, sizeof(struct RM_ethSensData_t));
+        }
     }
 
-    g_obj.is_safety = CCBool_create(SABOOL_TRUE);
-    CCObject_enableThreadSafe(g_obj.is_safety);
+    g_obj.is_safety = SABOOL_TRUE;
+    pthread_mutex_init(&g_obj.is_safety_locker, NULL);
 
-    TCLauncher_launch(RMM3508_sensThread, "robomas_motor_sens");
-    TCLauncher_launch(RMM3508_safetyThread, "robomas_motor_safety");
+    pthread_t sens_thread;
+    pthread_t safety_thread;
+    SATHREAD_CREATE("robomas_motor_sens", &sens_thread, NULL, RMM3508_sensThread, NULL);
+    SATHREAD_CREATE("robomas_motor_safety", &safety_thread, NULL, RMM3508_safetyThread, NULL);
 }
 
 
@@ -252,12 +260,16 @@ void RMM3508_setAdvancedCoef(size_t gw_id, int number, float p, float i, float d
 
 void RMM3508_safetyOn(void)
 {
-    CCBool_set(g_obj.is_safety, SABOOL_TRUE);
+    pthread_mutex_lock(&g_obj.is_safety_locker);
+    g_obj.is_safety = SABOOL_TRUE;
+    pthread_mutex_unlock(&g_obj.is_safety_locker);
 }
 
 void RMM3508_safetyOff(void)
 {
-    CCBool_set(g_obj.is_safety, SABOOL_FALSE);
+    pthread_mutex_lock(&g_obj.is_safety_locker);
+    g_obj.is_safety = SABOOL_FALSE;
+    pthread_mutex_unlock(&g_obj.is_safety_locker);
 }
 
 
@@ -428,9 +440,11 @@ int16_t RMM3508_getRpm(size_t gw_id, int number)
 {
     if(gw_id < g_obj.gw_count && 0 < number && number <= 8)
     {
-        struct RM_ethSensData_t data[8];
-        CCStruct_get(g_obj.sensors[gw_id], data, sizeof(struct RM_ethSensData_t) * 8);
-        return data[number - 1].rpm;
+        int16_t rpm;
+        pthread_mutex_lock(&g_obj.sensors_locker);
+        rpm = g_obj.sensors[gw_id][number - 1].rpm;
+        pthread_mutex_unlock(&g_obj.sensors_locker);
+        return rpm;
     }else{
         SALOG_ERROR("robomas", "Invalid gw_id(%d) or number(%d).", gw_id, number);
         return 0;
@@ -442,9 +456,11 @@ float RMM3508_getRealCurrentAsM3508(size_t gw_id, int number)
 {
     if(gw_id < g_obj.gw_count && 0 < number && number <= 8)
     {
-        struct RM_ethSensData_t data[8];
-        CCStruct_get(g_obj.sensors[gw_id], data, sizeof(struct RM_ethSensData_t) * 8);
-        return (float)data[number - 1].cur * ((float)20 / (float)16384);
+        float cur;
+        pthread_mutex_lock(&g_obj.sensors_locker);
+        cur = g_obj.sensors[gw_id][number - 1].cur;
+        pthread_mutex_unlock(&g_obj.sensors_locker);
+        return (float)cur * ((float)20 / (float)16384);
     }else{
         SALOG_ERROR("robomas", "Invalid gw_id(%d) or number(%d).", gw_id, number);
         return 0;
@@ -455,9 +471,11 @@ float RMM3508_getOrderCurrentAsM3508(size_t gw_id, int number)
 {
     if(gw_id < g_obj.gw_count && 0 < number && number <= 8)
     {
-        struct RM_ethSensData_t data[8];
-        CCStruct_get(g_obj.sensors[gw_id], data, sizeof(struct RM_ethSensData_t) * 8);
-        return (float)data[number - 1].set_cur * ((float)20 / (float)16384);
+        float set_cur;
+        pthread_mutex_lock(&g_obj.sensors_locker);
+        set_cur = g_obj.sensors[gw_id][number - 1].set_cur;
+        pthread_mutex_unlock(&g_obj.sensors_locker);
+        return (float)set_cur * ((float)20 / (float)16384);
     }else{
         SALOG_ERROR("robomas", "Invalid gw_id(%d) or number(%d).", gw_id, number);
         return 0;
@@ -469,9 +487,11 @@ float RMM3508_getRealCurrentAsM2006(size_t gw_id, int number)
 {
     if(gw_id < g_obj.gw_count && 0 < number && number <= 8)
     {
-        struct RM_ethSensData_t data[8];
-        CCStruct_get(g_obj.sensors[gw_id], data, sizeof(struct RM_ethSensData_t) * 8);
-        return (float)data[number - 1].cur * ((float)10 / (float)10000);
+        float cur;
+        pthread_mutex_lock(&g_obj.sensors_locker);
+        cur = g_obj.sensors[gw_id][number - 1].cur;
+        pthread_mutex_unlock(&g_obj.sensors_locker);
+        return (float)cur * ((float)10 / (float)10000);
     }else{
         SALOG_ERROR("robomas", "Invalid gw_id(%d) or number(%d).", gw_id, number);
         return 0;
@@ -482,9 +502,11 @@ float RMM3508_getOrderCurrentAsM2006(size_t gw_id, int number)
 {
     if(gw_id < g_obj.gw_count && 0 < number && number <= 8)
     {
-        struct RM_ethSensData_t data[8];
-        CCStruct_get(g_obj.sensors[gw_id], data, sizeof(struct RM_ethSensData_t) * 8);
-        return (float)data[number - 1].set_cur * ((float)10 / (float)10000);
+        float set_cur;
+        pthread_mutex_lock(&g_obj.sensors_locker);
+        set_cur = g_obj.sensors[gw_id][number - 1].set_cur;
+        pthread_mutex_unlock(&g_obj.sensors_locker);
+        return (float)set_cur * ((float)10 / (float)10000);
     }else{
         SALOG_ERROR("robomas", "Invalid gw_id(%d) or number(%d).", gw_id, number);
         return 0;
@@ -495,11 +517,10 @@ float RMM3508_getTheta(size_t gw_id, int number)
 {
     if(gw_id < g_obj.gw_count && 0 < number && number <= 8)
     {
-        struct RM_ethSensData_t data[8];
-        CCStruct_get(g_obj.sensors[gw_id], data, sizeof(struct RM_ethSensData_t) * 8);
-
-        double rota = (float)data[number - 1].rota;
-
+        double rota;
+        pthread_mutex_lock(&g_obj.sensors_locker);
+        rota = g_obj.sensors[gw_id][number - 1].rota;
+        pthread_mutex_unlock(&g_obj.sensors_locker);
         return (rota / 1000) * ((double)187 / (double)3591);
     }else{
         SALOG_ERROR("robomas", "Invalid gw_id(%d) or number(%d).", gw_id, number);
@@ -512,9 +533,12 @@ SABool_t RMM3508_isWakeup(size_t gw_id, int number)
 {
     if(gw_id < g_obj.gw_count && 0 < number && number <= 8)
     {
-        struct RM_ethSensData_t data[8];
-        CCStruct_get(g_obj.sensors[gw_id], data, sizeof(struct RM_ethSensData_t) * 8);
-        if(data[number - 1].status != 0)
+        uint8_t status;
+        pthread_mutex_lock(&g_obj.sensors_locker);
+        status = g_obj.sensors[gw_id][number - 1].status;
+        pthread_mutex_unlock(&g_obj.sensors_locker);
+
+        if(status != 0)
         {
             return SABOOL_TRUE;
         }else{
@@ -527,7 +551,7 @@ SABool_t RMM3508_isWakeup(size_t gw_id, int number)
 }
 
 
-void RMM3508_sensThread(void)
+void* RMM3508_sensThread(void* arg)
 {
     int sock = SASocket_socket(AF_INET, SOCK_DGRAM, 0);
     struct sockaddr_in recv_addr;
@@ -563,7 +587,9 @@ void RMM3508_sensThread(void)
                 if(gw_ips[gw_i] == client_address.sin_addr.s_addr)
                 {
                     struct RM_ethSensData_t* frame = (struct RM_ethSensData_t*)buff;
-                    CCStruct_set(g_obj.sensors[gw_i], frame, sizeof(struct RM_ethSensData_t) * 8);
+                    pthread_mutex_lock(&g_obj.sensors_locker);
+                    memcpy(&g_obj.sensors[gw_i][0], frame, sizeof(struct RM_ethSensData_t) * 8);
+                    pthread_mutex_unlock(&g_obj.sensors_locker);
                     // printf("%d,\t%d,\t%d,\t%d\n", frame[0].rpm, frame[0].cur / 10, frame[0].set_cur / 10, frame[0].rota);
                     break;
                 }
@@ -578,7 +604,7 @@ void RMM3508_sensThread(void)
 }
 
 
-void RMM3508_safetyThread(void)
+void* RMM3508_safetyThread(void* arg)
 {
     int sock = SASocket_socket(AF_INET, SOCK_DGRAM, 0);
 
@@ -599,12 +625,14 @@ void RMM3508_safetyThread(void)
     while(1)
     {
         uint8_t safety;
-        if(CCBool_get(g_obj.is_safety) == SABOOL_TRUE)
+        pthread_mutex_lock(&g_obj.is_safety_locker);
+        if(g_obj.is_safety == SABOOL_TRUE)
         {
             safety = 1;
         }else{
             safety = 0;
         }
+        pthread_mutex_unlock(&g_obj.is_safety_locker);
 
         for(size_t gw_i = 0; gw_i < gw_count; gw_i++)
         {

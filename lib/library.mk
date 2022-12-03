@@ -3,8 +3,6 @@ __DIR_PATH := lib/
 __CURRENT_MKFILES := \
 	std_api/subdir.mk \
 	object_parser/subdir.mk \
-	collection_class/subdir.mk \
-	thread_comm/subdir.mk \
 	process_comm/subdir.mk \
 
 SUBDIR_MAKEFILE += $(addprefix $(__DIR_PATH),$(__CURRENT_MKFILES))

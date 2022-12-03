@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-void PCServer_init(void);
+// void PCServer_init(void);
 
 #ifdef __cplusplus
 }

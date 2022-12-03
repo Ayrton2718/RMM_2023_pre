@@ -17,9 +17,9 @@
 
 void PCInitializer_init(const char* server_name)
 {
-    TCDirectory_mkdir("/", "process_comm");
-    TCDirectory_mkdir("process_comm", "my_servers");
-    TCDirectory_mkobj("process_comm/my_servers", "name", CCString_create(server_name));
+    // TCDirectory_mkdir("/", "process_comm");
+    // TCDirectory_mkdir("process_comm", "my_servers");
+    // TCDirectory_mkobj("process_comm/my_servers", "name", CCString_create(server_name));
 
     // PCServer_init();
     // PCClient_init();
