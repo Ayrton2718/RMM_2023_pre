@@ -162,7 +162,6 @@ void* CSTx_sendThread(void* args)
             SACOND_WAIT(cond, locker);
             all_count = SAQueue_count(&queue[0]) +  SAQueue_count(&queue[1]) +  SAQueue_count(&queue[2]);
         }
-        SALOCKER_UNLOCK(locker);
 
         size_t send_counter = 0;
         for(size_t priority = 2; 0 < priority; priority--)
@@ -200,6 +199,7 @@ void* CSTx_sendThread(void* args)
 
             SAQueue_clear(&skip_queue);
         }
+        SALOCKER_UNLOCK(locker);
 
         send_pack.data_count = send_counter;
         CSIo_send(&send_pack);
