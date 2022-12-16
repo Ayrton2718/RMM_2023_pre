@@ -46,6 +46,10 @@ void SABuffer_removeAtIndex(SABuffer_t* obj, size_t index);
 void SABuffer_removeAll(SABuffer_t* obj);
 void SABuffer_remove_stream(SABuffer_t* obj, size_t index, size_t data_count);
 
+typedef int (*SABuffer_sortCmp_callback_t) (const void *, const void *);
+void SABuffer_sort(SABuffer_t* obj, SABuffer_sortCmp_callback_t cmp_callback);
+
+
 #ifdef __cplusplus
 }
 #endif

@@ -12,7 +12,7 @@ Servo::Servo(int id, Port_t port, Gateway_t gw_id)
     this->Servo_cons(id, port, gw_id);
 }
 
-Servo::Servo(struct servo_param_t* param)
+Servo::Servo(const struct servo_param_t* param)
 {
     this->Servo_cons(param);
 }
@@ -58,7 +58,7 @@ void Servo::Servo_cons(int id, Port_t port, Gateway_t gw_id)
     }
 }
 
-void Servo::Servo_cons(struct servo_param_t *param)
+void Servo::Servo_cons(const struct servo_param_t *param)
 {
     this->Servo_cons(param->id, param->port, param->gw_id);
 }

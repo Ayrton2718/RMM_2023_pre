@@ -52,10 +52,10 @@ private:
 public:
     LPMotorCurrent(void);
     LPMotorCurrent(int id, Port_t port, LPMotorCurrentMode_t mode, DirectRota_t direction = DirectRota_FORWARD, Gateway_t gw_id = Gateway_1);
-    LPMotorCurrent(struct lp_motor_current_param_t* param);
+    LPMotorCurrent(const struct lp_motor_current_param_t* param);
 
     void LPMotorCurrent_cons(int id, Port_t port, LPMotorCurrentMode_t mode, DirectRota_t direction = DirectRota_FORWARD, Gateway_t gw_id = Gateway_1);
-    void LPMotorCurrent_cons(struct lp_motor_current_param_t* param);
+    void LPMotorCurrent_cons(const struct lp_motor_current_param_t* param);
 
     void init(void);
 

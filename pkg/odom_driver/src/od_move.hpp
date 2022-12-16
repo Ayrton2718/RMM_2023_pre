@@ -10,18 +10,14 @@ namespace odom_driver
 
 typedef struct
 {
-    // PID パラメータ
-    float kp;
-    float kd;
-    float ki;
-
     struct can_smbus::lp_motor_param_t motor_param[4];
 } MoveParam_t;
 
 class Move
 {
 private:
-    
+    can_smbus::LPMotor mot[4];
+
 public:
     Move(void);
     Move(const MoveParam_t* param);

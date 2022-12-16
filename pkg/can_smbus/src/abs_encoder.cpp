@@ -12,7 +12,7 @@ AbsEncoder::AbsEncoder(int id, DirectRota_t direction, Interval_t interval, Gate
     this->AbsEncoder_cons(id, direction, interval, gw_id);
 }
 
-AbsEncoder::AbsEncoder(struct abs_encoder_param_t* param)
+AbsEncoder::AbsEncoder(const struct abs_encoder_param_t* param)
 {
     this->AbsEncoder_cons(param);
 }
@@ -36,7 +36,7 @@ void AbsEncoder::AbsEncoder_cons(int id, DirectRota_t direction, Interval_t inte
     }
 }
 
-void AbsEncoder::AbsEncoder_cons(struct abs_encoder_param_t *param)
+void AbsEncoder::AbsEncoder_cons(const struct abs_encoder_param_t *param)
 {
     this->AbsEncoder_cons(param->id, param->direction, param->interval, param->gw_id);
 }

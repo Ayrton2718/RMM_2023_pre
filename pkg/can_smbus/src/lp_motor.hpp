@@ -33,10 +33,10 @@ private:
 public:
     LPMotor(void);
     LPMotor(int id, Port_t port, DirectRota_t direction = DirectRota_FORWARD, Gateway_t gw_id = Gateway_1);
-    LPMotor(struct lp_motor_param_t* param);
+    LPMotor(const struct lp_motor_param_t* param);
 
     void LPMotor_cons(int id, Port_t port, DirectRota_t direction = DirectRota_FORWARD, Gateway_t gw_id = Gateway_1);
-    void LPMotor_cons(struct lp_motor_param_t* param);
+    void LPMotor_cons(const struct lp_motor_param_t* param);
 
     void init(void);
 

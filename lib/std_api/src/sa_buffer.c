@@ -59,6 +59,7 @@ void SABuffer_clone(const SABuffer_t* obj, SABuffer_t* out_obj)
     out_obj->one_block_count = obj->one_block_count;
 
     out_obj->buffer = (uint8_t*)SASYS_MEM_MALLOC(obj->one_data_size * obj->one_block_count * obj->block_count);
+    SABuffer_add_stream(out_obj, SABuffer_count(obj), SABuffer_readAtIndex_pointer(obj, 0));
 }
 
 
@@ -203,4 +204,10 @@ void SABuffer_remove_stream(SABuffer_t* obj, size_t index, size_t data_count)
     memmove(&obj->buffer[obj->one_data_size * index], &obj->buffer[obj->one_data_size * (index + data_count)], obj->one_data_size * (befo_count - (index + data_count)));
 
     SABuffer_realloc(obj);
+}
+
+
+void SABuffer_sort(SABuffer_t* obj, SABuffer_sortCmp_callback_t cmp_callback)
+{
+    qsort(obj->buffer, obj->data_count, obj->one_data_size, cmp_callback);
 }

@@ -8,6 +8,7 @@
 #include "../../src/sa_locker.h"
 #include "../../src/sa_log.h"
 #include "../../src/sa_mem.h"
+#include "../../src/sa_random.h"
 #include "../../src/sa_queue.h"
 #include "../../src/sa_socket.h"
 #include "../../src/sa_thread.h"

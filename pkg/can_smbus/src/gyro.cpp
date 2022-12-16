@@ -12,7 +12,7 @@ Gyro::Gyro(int id, GyroMode_t mode, Interval_t interval, Gateway_t gw_id)
     this->Gyro_cons(id, mode, interval, gw_id);
 }
 
-Gyro::Gyro(struct gyro_param_t* param)
+Gyro::Gyro(const struct gyro_param_t* param)
 {
     this->Gyro_cons(param);
 }
@@ -85,7 +85,7 @@ void Gyro::Gyro_cons(int id, GyroMode_t mode, Interval_t interval, Gateway_t gw_
     this->m_interval = interval;
 }
 
-void Gyro::Gyro_cons(struct gyro_param_t *param)
+void Gyro::Gyro_cons(const struct gyro_param_t *param)
 {
     this->Gyro_cons(param->id, param->mode, param->interval, param->gw_id);
 }

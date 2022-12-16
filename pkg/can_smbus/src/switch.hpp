@@ -33,10 +33,10 @@ private:
 public:
     Switch(void);
     Switch(int id, Port_t port, Interval_t interval = Interval_20Hz, Gateway_t gw_id = Gateway_1);
-    Switch(struct switch_param_t* param);
+    Switch(const struct switch_param_t* param);
 
     void Switch_cons(int id, Port_t port, Interval_t interval = Interval_20Hz, Gateway_t gw_id = Gateway_1);
-    void Switch_cons(struct switch_param_t *param);
+    void Switch_cons(const struct switch_param_t *param);
 
     void init(void);
 

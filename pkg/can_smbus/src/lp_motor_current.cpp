@@ -13,7 +13,7 @@ LPMotorCurrent::LPMotorCurrent(int id, Port_t port, LPMotorCurrentMode_t mode, D
 }
 
 
-LPMotorCurrent::LPMotorCurrent(struct lp_motor_current_param_t* param)
+LPMotorCurrent::LPMotorCurrent(const struct lp_motor_current_param_t* param)
 {
     this->LPMotorCurrent_cons(param);
 }
@@ -71,7 +71,7 @@ void LPMotorCurrent::LPMotorCurrent_cons(int id, Port_t port, LPMotorCurrentMode
     }
 }
 
-void LPMotorCurrent::LPMotorCurrent_cons(struct lp_motor_current_param_t* param)
+void LPMotorCurrent::LPMotorCurrent_cons(const struct lp_motor_current_param_t* param)
 {
     this->LPMotorCurrent_cons(param->id, param->port, param->mode, param->direction, param->gw_id);
 }

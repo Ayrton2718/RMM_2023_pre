@@ -12,7 +12,7 @@ Switch::Switch(int id, Port_t port, Interval_t interval, Gateway_t gw_id)
     this->Switch_cons(id, port, interval, gw_id);
 }
 
-Switch::Switch(struct switch_param_t* param)
+Switch::Switch(const struct switch_param_t* param)
 {
     this->Switch_cons(param);
 }
@@ -35,7 +35,7 @@ void Switch::Switch_cons(int id, Port_t port, Interval_t interval, Gateway_t gw_
     this->m_port = (uint8_t)port;
 }
 
-void Switch::Switch_cons(struct switch_param_t *param)
+void Switch::Switch_cons(const struct switch_param_t *param)
 {
     this->Switch_cons(param->id, param->port, param->interval, param->gw_id);
 }

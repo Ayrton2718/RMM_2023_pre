@@ -11,6 +11,11 @@ namespace odom_driver
 class Navigation
 {
 public:
+    virtual void init() = 0;
+
+    virtual bool is_finish(void) = 0;
+
+    virtual Vector_t finalcoordinates(void) = 0;
     virtual Vector_t generate(void) = 0;
 };
 
@@ -18,26 +23,27 @@ public:
 class NavigationLine : public Navigation
 {
 private:
-    
+    Vector_t m_target;
+    uint64_t m_target_time;
+
+    bool m_finish_flag = false;
+
+    std_api::Timer m_timer;
+
 public:
     NavigationLine(void);
+    NavigationLine(float target_x, float target_y, float target_yaw, uint64_t time_ms);
 
-    void NavigationLine_cons(float target_x, float target_y, float target_yaw);
-
-    Vector_t generate(void);
-};
-
-
-class NavigationCircle : public Navigation
-{
-private:
+    void NavigationLine_cons(float target_x, float target_y, float target_yaw, uint64_t time_ms);
     
-public:
-    NavigationCircle(void);
+    void init();
 
-    void NavigationCircle_cons(float r, float theta);
-
+    bool is_finish(void);
+    
+    Vector_t finalcoordinates(void);
     Vector_t generate(void);
+
+    static Navigation* create(float target_x, float target_y, float target_yaw, uint64_t time_ms);
 };
 
 }

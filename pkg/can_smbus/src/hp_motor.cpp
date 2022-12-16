@@ -12,7 +12,7 @@ HPMotor::HPMotor(int id, DirectRota_t direction, Gateway_t gw_id)
     this->HPMotor_cons(id, direction, gw_id);
 }
 
-HPMotor::HPMotor(struct hp_motor_param_t* param)
+HPMotor::HPMotor(const struct hp_motor_param_t* param)
 {
     this->HPMotor_cons(param);
 }
@@ -35,7 +35,7 @@ void HPMotor::HPMotor_cons(int id, DirectRota_t direction, Gateway_t gw_id)
     }
 }
 
-void HPMotor::HPMotor_cons(struct hp_motor_param_t* param)
+void HPMotor::HPMotor_cons(const struct hp_motor_param_t* param)
 {
     this->HPMotor_cons(param->id, param->direction, param->gw_id);
 }

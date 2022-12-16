@@ -13,7 +13,7 @@ LPMotor::LPMotor(int id, Port_t port, DirectRota_t direction, Gateway_t gw_id)
 }
 
 
-LPMotor::LPMotor(struct lp_motor_param_t* param)
+LPMotor::LPMotor(const struct lp_motor_param_t* param)
 {
     this->LPMotor_cons(param);
 }
@@ -55,7 +55,7 @@ void LPMotor::LPMotor_cons(int id, Port_t port, DirectRota_t direction, Gateway_
     }
 }
 
-void LPMotor::LPMotor_cons(struct lp_motor_param_t* param)
+void LPMotor::LPMotor_cons(const struct lp_motor_param_t* param)
 {
     this->LPMotor_cons(param->id, param->port, param->direction, param->gw_id);
 }

@@ -30,10 +30,10 @@ private:
 public:
     Servo(void);
     Servo(int id, Port_t port, Gateway_t gw_id = Gateway_1);
-    Servo(struct servo_param_t* param);
+    Servo(const struct servo_param_t* param);
 
     void Servo_cons(int id, Port_t port, Gateway_t gw_id = Gateway_1);
-    void Servo_cons(struct servo_param_t *param);
+    void Servo_cons(const struct servo_param_t *param);
 
     void init(void);
 

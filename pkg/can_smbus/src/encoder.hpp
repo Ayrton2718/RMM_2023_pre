@@ -76,10 +76,10 @@ private:
 public:
     Encoder(void);
     Encoder(int id, EncoderMode_t mode, DirectRota_t direction = DirectRota_FORWARD, Interval_t interval = Interval_20Hz, EncoderPPR_t ppr = EncoderPPR_48, Gateway_t gw_id = Gateway_1);
-    Encoder(struct encoder_param_t* param);
+    Encoder(const struct encoder_param_t* param);
 
     void Encoder_cons(int id, EncoderMode_t mode, DirectRota_t direction = DirectRota_FORWARD, Interval_t interval = Interval_20Hz, EncoderPPR_t ppr = EncoderPPR_48, Gateway_t gw_id = Gateway_1);
-    void Encoder_cons(struct encoder_param_t *param);
+    void Encoder_cons(const struct encoder_param_t *param);
 
     void init(void);
 

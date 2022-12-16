@@ -10,14 +10,16 @@
                 "${workspaceFolder}/pkg/can_smbus/inc/**",
                 "${workspaceFolder}/pkg/odom_driver/inc/**",
                 "${workspaceFolder}/pkg/robomas/inc/**",
-                "${workspaceFolder}/pkg/controller_client/inc/**"
+                "${workspaceFolder}/pkg/controller_client/inc/**",
+                "/usr/local/opt/opencv/include/opencv4"
             ],
             "defines": [
+                "LL_LRF_SIM"
             ],
-            "macFrameworkPath": []
+            "macFrameworkPath": [],
             // "compilerPath": "/usr/local/bin/gcc-11",
             // "cStandard": "gnu17",
-            // "cppStandard": "gnu++17",
+            "cppStandard": "c++17"
             // "intelliSenseMode": "macos-gcc-x64"
         }
     ],

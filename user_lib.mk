@@ -1,5 +1,6 @@
-__DIR_PATH := ./
+__DIR_PATH := 
 
 __CURRENT_MKFILES := \
+	lrf_localization/subdir.mk \
 
 SUBDIR_MAKEFILE += $(addprefix $(__DIR_PATH),$(__CURRENT_MKFILES))

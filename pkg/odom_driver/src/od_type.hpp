@@ -2,6 +2,7 @@
 #define ODOM_DRIVER_SRC_OD_TYPE_HPP
 
 #include <can_smbus/can_smbus.hpp>
+#include <math.h>
 
 namespace odom_driver
 {

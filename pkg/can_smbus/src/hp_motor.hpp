@@ -33,10 +33,10 @@ private:
 public:
     HPMotor(void);
     HPMotor(int id, DirectRota_t direction = DirectRota_FORWARD, Gateway_t gw_id = Gateway_1);
-    HPMotor(struct hp_motor_param_t* param);
+    HPMotor(const struct hp_motor_param_t* param);
 
     void HPMotor_cons(int id, DirectRota_t direction = DirectRota_FORWARD, Gateway_t gw_id = Gateway_1);
-    void HPMotor_cons(struct hp_motor_param_t* param);
+    void HPMotor_cons(const struct hp_motor_param_t* param);
 
     void init(void);
 

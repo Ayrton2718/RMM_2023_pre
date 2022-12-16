@@ -53,10 +53,10 @@ private:
 public:
     Gyro(void);
     Gyro(int id, GyroMode_t mode, Interval_t interval = Interval_20Hz, Gateway_t gw_id = Gateway_1);
-    Gyro(struct gyro_param_t* param);
+    Gyro(const struct gyro_param_t* param);
 
     void Gyro_cons(int id, GyroMode_t mode, Interval_t interval = Interval_20Hz, Gateway_t gw_id = Gateway_1);
-    void Gyro_cons(struct gyro_param_t *param);
+    void Gyro_cons(const struct gyro_param_t *param);
 
     void init(void);
 

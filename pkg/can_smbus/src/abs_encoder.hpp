@@ -33,10 +33,10 @@ private:
 public:
     AbsEncoder(void);
     AbsEncoder(int id, DirectRota_t direction = DirectRota_FORWARD, Interval_t interval = Interval_20Hz, Gateway_t gw_id = Gateway_1);
-    AbsEncoder(struct abs_encoder_param_t* param);
+    AbsEncoder(const struct abs_encoder_param_t* param);
 
     void AbsEncoder_cons(int id, DirectRota_t direction = DirectRota_FORWARD, Interval_t interval = Interval_20Hz, Gateway_t gw_id = Gateway_1);
-    void AbsEncoder_cons(struct abs_encoder_param_t *param);
+    void AbsEncoder_cons(const struct abs_encoder_param_t *param);
 
     void init(void);
 

@@ -12,7 +12,7 @@ Encoder::Encoder(int id, EncoderMode_t mode, DirectRota_t direction, Interval_t 
     this->Encoder_cons(id, mode, direction, interval, ppr, gw_id);
 }
 
-Encoder::Encoder(struct encoder_param_t* param)
+Encoder::Encoder(const struct encoder_param_t* param)
 {
     this->Encoder_cons(param);
 }
@@ -61,7 +61,7 @@ void Encoder::Encoder_cons(int id, EncoderMode_t mode, DirectRota_t direction, I
     }
 }
 
-void Encoder::Encoder_cons(struct encoder_param_t *param)
+void Encoder::Encoder_cons(const struct encoder_param_t *param)
 {
     this->Encoder_cons(param->id, param->mode, param->direction, param->interval, param->ppr, param->gw_id);
 }
