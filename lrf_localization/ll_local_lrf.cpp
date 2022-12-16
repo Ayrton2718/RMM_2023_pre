@@ -52,18 +52,18 @@ void LocalLrf::LocalLrf_cons(const LocalLrfParam_t* param)
     this->m_befo_wheel.theta = 0;
     this->m_local.LocalWheel_cons(&param->wheel_param);
 #else
-    this->m_map = LLMap_create(10.7, 12.3, 5.35, 9.65);
+    // this->m_map = LLMap_create(10.7, 12.3, 5.35, 9.65);
 
-    LLMap_addRectangle(this->m_map, -4, 9.5, 4, 0, 0.02, LLMap_writeType_Support);
-    LLMap_addRectangle(this->m_map, -4, 0, 4, -2.5, 0.02, LLMap_writeType_Support);
-    LLMap_addRectangle(this->m_map, -5.2, -1.3, -4, -2.5, 0.02, LLMap_writeType_Support);
-    LLMap_addRectangle(this->m_map, 4, -1.3, 5.2, -2.5, 0.02, LLMap_writeType_Support);
+    // LLMap_addRectangle(this->m_map, -4, 9.5, 4, 0, 0.02, LLMap_writeType_Support);
+    // LLMap_addRectangle(this->m_map, -4, 0, 4, -2.5, 0.02, LLMap_writeType_Support);
+    // LLMap_addRectangle(this->m_map, -5.2, -1.3, -4, -2.5, 0.02, LLMap_writeType_Support);
+    // LLMap_addRectangle(this->m_map, 4, -1.3, 5.2, -2.5, 0.02, LLMap_writeType_Support);
 
-    LLMap_addBox(this->m_map, 0, 2, 0.175, 0.175, LLMap_writeType_Object);
-    LLMap_addBox(this->m_map, 2.5, 2, 0.175, 0.175, LLMap_writeType_Object);
-    LLMap_addBox(this->m_map, -2.5, 2, 0.175, 0.175, LLMap_writeType_Object);
-    LLMap_addBox(this->m_map, 1.5, 4, 0.175, 0.175, LLMap_writeType_Object);
-    LLMap_addBox(this->m_map, -1.5, 4, 0.175, 0.175, LLMap_writeType_Object);
+    // LLMap_addBox(this->m_map, 0, 2, 0.175, 0.175, LLMap_writeType_Object);
+    // LLMap_addBox(this->m_map, 2.5, 2, 0.175, 0.175, LLMap_writeType_Object);
+    // LLMap_addBox(this->m_map, -2.5, 2, 0.175, 0.175, LLMap_writeType_Object);
+    // LLMap_addBox(this->m_map, 1.5, 4, 0.175, 0.175, LLMap_writeType_Object);
+    // LLMap_addBox(this->m_map, -1.5, 4, 0.175, 0.175, LLMap_writeType_Object);
 
     this->m_virtual_tomas = LLTomas_clone(this->m_tomas);
     // LLTomas_drawBox(this->m_virtual_tomas, 1.5, -1, 0.5, 0.5);
@@ -124,12 +124,12 @@ void LocalLrf::run(void)
     LLScanType_t scan = LLTomas_virtualScan(this->m_virtual_tomas, real_pos.x, real_pos.y, real_pos.yaw, 1, M_PI / 2, M_PI * 3 / 2);
 
     LLType_pos_t delta = {0, 0, 0};
-    LLMap_t map = LLMap_copy(this->m_map);
-    LLMap_writeScan(map, real_pos.x, real_pos.y, real_pos.yaw, scan, LLMap_writeType_Laser);
-    LLMap_addDot(map, real_pos.x, real_pos.y, LLMap_writeType_Support);
-    LLMap_addDot(map, now_pos.x, now_pos.y, LLMap_writeType_Object);
-    LLMap_show(map, "map", &delta);
-    LLMap_destructor(map);
+    // LLMap_t map = LLMap_copy(this->m_map);
+    // LLMap_writeScan(map, real_pos.x, real_pos.y, real_pos.yaw, scan, LLMap_writeType_Laser);
+    // LLMap_addDot(map, real_pos.x, real_pos.y, LLMap_writeType_Support);
+    // LLMap_addDot(map, now_pos.x, now_pos.y, LLMap_writeType_Object);
+    // LLMap_show(map, "map", &delta);
+    // LLMap_destructor(map);
 
     real_pos.x += delta.x;
     real_pos.y += delta.y;

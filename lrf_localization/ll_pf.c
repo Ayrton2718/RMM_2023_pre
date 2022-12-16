@@ -64,7 +64,7 @@ static void LLPf_setNode(LLPf_t obj, const LLType_pos_t* d_move)
     float sum_move = d_move->x + d_move->y + d_move->yaw;
     float rate = (fabs(sum_move) * 15) + 0.1;
 
-    SALOG_INFO("sum_move", "%f", sum_move);
+    // SALOG_INFO("sum_move", "%f", sum_move);
 
     for(size_t i = 0; i < LLPF_NODE_COUNT; i++)
     {   
@@ -94,9 +94,13 @@ static void LLPf_culcWeight(LLPf_t obj, LLScanType_t* scan)
     // // LLScanType_destructor(&a);
     // LLScanType_destructor(&b);
 
+    uint64_t sum = 0;
     for(size_t i = 0; i < LLPF_NODE_COUNT; i++)
     {
+        SATime_timer_t tim;
+        SATime_timerStart(&tim);
         LLScanType_t sim_scan = LLTomas_simulateRange(_obj->tomas, _obj->node[i].pos.x, _obj->node[i].pos.y, _obj->node[i].pos.yaw, scan);
+        sum += SATime_timerGetUs(&tim);
         
         size_t contain_count = 0;
         float diff_sum = 0;
@@ -163,6 +167,8 @@ static void LLPf_culcWeight(LLPf_t obj, LLScanType_t* scan)
 
         LLScanType_destructor(&sim_scan);
     }
+
+    SALOG_INFO("tmp", "%d", sum);
 
     for(size_t node_i = 0; node_i < LLPF_NODE_COUNT; node_i++)
     {

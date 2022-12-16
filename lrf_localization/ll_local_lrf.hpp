@@ -41,7 +41,7 @@ private:
     odom_driver::LocalWheel m_local;
 #else
     LLTomas_t   m_virtual_tomas;
-    LLMap_t     m_map;
+    // LLMap_t     m_map;
 #endif /*LL_LRF_SIM*/
 
     pthread_mutex_t         m_locker;
