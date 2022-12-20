@@ -1,6 +1,8 @@
 #include "lib/library.hpp"
 #include "pkg/package.hpp"
+
 #include "lrf_localization/ll_local_lrf.hpp"
+#include "webgl_map/wm_gl.h"
 
 int main(void)
 {
@@ -13,6 +15,50 @@ int main(void)
     SALOG_CREATE_FILE("lrf_localization");
     SALOG_CREATE_FILE("ll_map");
     SALOG_CREATE_FILE("main");
+
+    WMGl_t wm = WMGl_create("127.0.0.1", 3003, 1200, 1200);
+
+    WMGl_layer_t layer = WMGl_createLayer(wm);
+
+    WMGl_vector_t vertex_polygon[] = {{-200, -200}, {200, -200}, {200, 200}, {-200, 200}};
+    WMGl_addPolygon(layer, {255, 255, 255}, vertex_polygon, 4, 0);
+    WMGl_render(wm, 0, layer);
+
+    SATime_delaySec(2);
+
+    layer = WMGl_createLayer(wm);
+    // WMGl_vector_t vec[5] = {{-100, -100}, {200, -200}, {200, 200}, {-200, 200}, {-100, -100}};
+    // WMGl_addLine(layer, {255, 0, 0}, vec, 5);
+    WMGl_addCircle(layer, {125, 0, 0}, {500, 500}, 1);
+    WMGl_addCircle(layer, {125, 0, 0}, {500, 500}, 100);
+    WMGl_addCircle(layer, {125, 0, 0}, {500, 500}, 200);
+    WMGl_addCircle(layer, {125, 0, 0}, {500, 500}, 300);
+    WMGl_addCircle(layer, {125, 0, 0}, {500, 500}, 400);
+    WMGl_addCircle(layer, {125, 0, 0}, {500, 500}, 500);
+ 
+    WMGl_addCircle(layer, {125, 0, 0}, {-500, 500}, 1);
+    WMGl_addCircle(layer, {125, 0, 0}, {-500, 500}, 100);
+    WMGl_addCircle(layer, {125, 0, 0}, {-500, 500}, 200);
+    WMGl_addCircle(layer, {125, 0, 0}, {-500, 500}, 300);
+    WMGl_addCircle(layer, {125, 0, 0}, {-500, 500}, 400);
+    WMGl_addCircle(layer, {125, 0, 0}, {-500, 500}, 500);
+
+    WMGl_render(wm, 1, layer);
+
+    SATime_delaySec(2);
+
+    layer = WMGl_createLayer(wm);
+
+    WMGl_addCircle(layer, {125, 0, 0}, {0, 0}, 1);
+    WMGl_addCircle(layer, {125, 0, 0}, {0, 0}, 100);
+    WMGl_addCircle(layer, {125, 0, 0}, {0, 0}, 200);
+    WMGl_addCircle(layer, {125, 0, 0}, {0, 0}, 300);
+    WMGl_addCircle(layer, {125, 0, 0}, {0, 0}, 400);
+    WMGl_addCircle(layer, {125, 0, 0}, {0, 0}, 500);
+
+    WMGl_vector_t vertex_line[] = {{0, 0}, {500, 500}};
+    WMGl_addLine(layer, {125, 0, 0}, vertex_line, 2);
+    WMGl_render(wm, 2, layer);
 
     lrf_localization::LocalLrfParam_t local_param;
     local_param.init_x = 0;

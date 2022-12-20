@@ -1,25 +1,18 @@
-__DIR_PATH := lib/
+__DIR_PATH := lib/collection_class/
 
-__CURRENT_MKFILES := \
-	std_api/subdir.mk \
-	object_parser/subdir.mk \
-	collection_class/subdir.mk \
-	process_comm/subdir.mk \
+__MY_SRCS :=
 
-SUBDIR_MAKEFILE += $(addprefix $(__DIR_PATH),$(__CURRENT_MKFILES))
-
-
-__MY_SRCS := library.cpp
-
-__MY_SRC_DIR := 
+__MY_SRC_DIR := \
+	src \
 
 __MY_SRCS := $(addprefix $(__DIR_PATH),$(__MY_SRCS))
 __MY_SRC_DIR := $(addprefix $(__DIR_PATH),$(__MY_SRC_DIR))
-__MY_SRCS += $(wildcard $(addsuffix /*.c,$(__MY_SRC_DIR)))
+__MY_SRCS = $(wildcard $(addsuffix /*.c,$(__MY_SRC_DIR)))
 __MY_SRCS += $(wildcard $(addsuffix /*.cpp,$(__MY_SRC_DIR)))
 
 
 __INC_PATH := \
+	inc \
 
 ALL_SRC += $(__MY_SRCS)
 
