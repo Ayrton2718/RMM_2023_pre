@@ -50,7 +50,7 @@ void LocalLrf::LocalLrf_cons(const LocalLrfParam_t* param)
     this->m_befo_wheel.theta = 0;
     this->m_local.LocalWheel_cons(&param->wheel_param);
 #else
-    this->m_wm = WMGl_create("127.0.0.1", 3003, 12.3, 9.65);
+    this->m_wm = WMGl_create("10.42.0.1", 3003, 12.3, 9.65);
     WMGl_layer_t bg = WMGl_createLayer(this->m_wm);
 
     WMGl_vector_t vertex1[] = {{-5.2, -1.3}, {-5.2, -2.5}, {-4, -2.5}, {-4, -1.3}, {-5.2, -1.3}};
@@ -187,47 +187,6 @@ void LocalLrf::run(void)
         }
     }
     CCAutoRelease_doneScope();
-
-    //  switch(key)
-//     {
-//     case 119:
-//         SALOG_INFO("ll_map", "Up");
-//         pos->y += 0.05;
-//         break;
-    
-//     case 115:
-//         SALOG_INFO("ll_map", "Down");
-//         pos->y -= 0.05;
-//         break;
-
-//     case 100:
-//         SALOG_INFO("ll_map", "Left");
-//         pos->x += 0.05;
-//         break;
-
-//     case 97:
-//         SALOG_INFO("ll_map", "Right");
-//         pos->x -= 0.05;
-//         break;
-
-//     case 101:
-//         SALOG_INFO("ll_map", "turnR");
-//         pos->yaw += 5 * M_PI / 180;
-//         break;
-
-//     case 113:
-//         SALOG_INFO("ll_map", "turnL");
-//         pos->yaw -= 5 * M_PI / 180;
-//         break;
-
-//     case 27:
-//         exit(0);
-//         break;
-
-//     default:
-//         SALOG_INFO("ll_map", "%d", key);
-//         break;
-//     }
 
     real_pos.x += delta.x;
     real_pos.y += delta.y;
