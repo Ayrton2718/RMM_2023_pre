@@ -113,8 +113,7 @@ int main(void)
 // } Float2Int_t;
 
 
-// void DMA_powpow(hls::stream< ap_axis<32,2,5,6> > &A,
-// 	     hls::stream< ap_axis<32,2,5,6> > &B)
+// void DMA_powpow(hls::stream< ap_axis<32,2,5,6> > &A, hls::stream< ap_axis<32,2,5,6> > &B)
 // {
 // #pragma HLS INTERFACE axis port=A
 // #pragma HLS INTERFACE axis port=B
@@ -136,33 +135,47 @@ int main(void)
 // 	my_y.ui = tmp.data;
 // 	A.read(tmp);
 // 	my_yaw.ui = tmp.data;
-// 	A.read(tmp);
-// 	target_x0.ui = tmp.data;
-// 	A.read(tmp);
-// 	target_y0.ui = tmp.data;
-// 	A.read(tmp);
-// 	target_vx.ui = tmp.data;
-// 	A.read(tmp);
-// 	target_vy.ui = tmp.data;
 
-// 	float dir_x = cosf(my_yaw.f) * -1;
-// 	float dir_y = sinf(my_yaw.f) * -1;
+//     for(size_t angle_i = 0; angle_i < angle_count; angle_i++)
+//     {
+//         Float2Int_t min_hit;
+//         min_hit.f = FLT_MAX;
+//         for(size_t obj_i = 0; obj_i < obj_count; obj_i++)
+//         {
+//             A.read(tmp);
+//             target_x0.ui = tmp.data;
+//             A.read(tmp);
+//             target_y0.ui = tmp.data;
+//             A.read(tmp);
+//             target_vx.ui = tmp.data;
+//             A.read(tmp);
+//             target_vy.ui = tmp.data;
 
-// 	float d_x = my_x.f - target_x0.f;
-// 	float d_y = my_y.f - target_y0.f;
+//             float dir_x = cosf((float)angle_i - my_yaw.f) * -1;
+//             float dir_y = sinf((float)angle_i - my_yaw.f) * -1;
 
-// 	float donom = target_vx.f * dir_y - target_vy.f * dir_x;
-// 	uint8_t isin_donom = (1 < fabs(donom) / LPTOMASCUDA_EPSIRON)? 1:0;
-// 	donom = isin_donom * donom + (1 - isin_donom) * 1;
+//             float d_x = my_x.f - target_x0.f;
+//             float d_y = my_y.f - target_y0.f;
 
-// 	float u = (d_x * dir_y - d_y * dir_x) / donom;
-// 	uint8_t isin_u = ((0 <= u)? 1:0) &  ((u <= 1)? 1:0);
+//             float donom = target_vx.f * dir_y - target_vy.f * dir_x;
+//             uint8_t isin_donom = (1 < fabs(donom) / LPTOMASCUDA_EPSIRON)? 1:0;
+//             donom = isin_donom * donom + (1 - isin_donom) * 1;
 
-// 	Float2Int_t t;
-// 	t.f = (target_vx.f * d_y - target_vy.f * d_x) / donom;
+//             float u = (d_x * dir_y - d_y * dir_x) / donom;
+//             uint8_t isin_u = ((0 <= u)? 1:0) &  ((u <= 1)? 1:0);
 
-// 	t.f = isin_donom * t.f;
-// 	t.f = isin_u * t.f;
-// 	tmp.data = t.ui;
-// 	B.write(tmp);
+//             float t = (target_vx.f * d_y - target_vy.f * d_x) / donom;
+//             t = isin_donom * t;
+//             t = isin_u * t;
+//             min_hit.f = ((0 < t) & (t < min_hit.f))? t : min_hit.f;
+//         }
+
+//         if(12 < min_hit.f)
+//         {
+//             min_hit.f = 0;
+//         }
+
+//         tmp.data = min_hit.ui;
+//         B.write(tmp);
+//     }
 // }
