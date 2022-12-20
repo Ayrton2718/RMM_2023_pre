@@ -11,6 +11,8 @@
 #include "ll_timer.h"
 #include "ll_tomas.h"
 
+#include "../webgl_map/wm_gl.h"
+
 namespace lrf_localization
 {
 
@@ -41,6 +43,7 @@ private:
     odom_driver::LocalWheel m_local;
 #else
     LLTomas_t   m_virtual_tomas;
+    WMGl_t  m_wm;
     // LLMap_t     m_map;
 #endif /*LL_LRF_SIM*/
 

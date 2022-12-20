@@ -39,6 +39,12 @@ WMGl_t WMGl_create(const char* ip, uint16_t port, float width, float height)
     _obj->send_addr.sin_port = htons(port);
     _obj->send_addr.sin_addr.s_addr = inet_addr(ip);
 
+    struct sockaddr_in recv_addr;
+    recv_addr.sin_family = AF_INET;
+    recv_addr.sin_port = htons(5000);
+    recv_addr.sin_addr.s_addr = inet_addr("0.0.0.0");
+    SASocket_bind(_obj->sock, (struct sockaddr*)&recv_addr, sizeof(struct sockaddr_in));
+
     _obj->width = width;
     _obj->height = height;
 
@@ -165,7 +171,40 @@ void WMGl_render(WMGl_t obj, size_t layer_num, WMGl_layer_t layer)
         size_t send_len = CCBinary_size(send_json);
         SASocket_sendto(_obj->sock, send_str, send_len, 0, (struct sockaddr*)&_obj->send_addr, sizeof(struct sockaddr_in));
 
-        SALOG_INFO("sdfs", "%d, %s", send_len, send_str);
+        // SALOG_INFO("sdfs", "%d, %s", send_len, send_str);
     }
     CCAutoRelease_doneScope();
+}
+
+
+CC_obj WMGl_getKey(WMGl_t obj, uint32_t timeout_ms)
+{
+    WMGl_info_t* _obj = (WMGl_info_t*)obj;
+
+    struct timeval tv;
+#ifdef __APPLE__
+    tv.tv_sec = 10;
+    tv.tv_usec = 0;
+#else
+    tv.tv_sec = 0;
+    tv.tv_usec = timeout_ms * 1000;
+#endif /*__APPLE__*/
+    SASocket_setsockopt(_obj->sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(tv));
+
+    char buffer[256];
+    int len = SASocket_recv(_obj->sock, buffer, sizeof(buffer), 0);
+    if(0 < len)
+    {
+        CC_obj key = NULL;
+        CCAutoRelease_startScope();
+        {
+            CC_obj bin = CCAutoRelease_add(CCBinary_createWithLength(buffer, len));
+            CC_obj recv_obj = CCAutoRelease_add(CCJsonSerializer_dynamicLoad(bin));
+            CC_obj key_obj = CCDictionary_objectForKey(recv_obj, "key");
+            key = CCObject_copy(key_obj);
+        }
+        CCAutoRelease_doneScope();
+        return key;
+    }
+    return NULL;
 }

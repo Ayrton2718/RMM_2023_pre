@@ -35,6 +35,8 @@ void WMGl_addPolygon(WMGl_layer_t layer, WMGl_color_t col, const WMGl_vector_t* 
 
 void WMGl_render(WMGl_t obj, size_t layer_num, WMGl_layer_t layer);
 
+CC_obj WMGl_getKey(WMGl_t obj, uint32_t timeout_ms); 
+
 #ifdef __cplusplus
 }
 #endif
