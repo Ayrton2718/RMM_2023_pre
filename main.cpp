@@ -97,3 +97,72 @@ int main(void)
         std_api::Delay::ms(50);
     }
 }
+
+
+// #include "ap_axi_sdata.h"
+// #include "hls_stream.h"
+// #include <math.h>
+// #include <stdint.h>
+
+// #define LPTOMASCUDA_EPSIRON ((float)10e-6)
+
+// typedef union
+// {
+// 	float f;
+// 	uint32_t ui;
+// } Float2Int_t;
+
+
+// void DMA_powpow(hls::stream< ap_axis<32,2,5,6> > &A,
+// 	     hls::stream< ap_axis<32,2,5,6> > &B)
+// {
+// #pragma HLS INTERFACE axis port=A
+// #pragma HLS INTERFACE axis port=B
+// #pragma HLS interface s_axilite port=return
+
+// 	ap_axis<32,2,5,6> tmp;
+
+// 	Float2Int_t my_x;
+// 	Float2Int_t my_y;
+// 	Float2Int_t my_yaw;
+// 	Float2Int_t target_x0;
+// 	Float2Int_t target_y0;
+// 	Float2Int_t target_vx;
+// 	Float2Int_t target_vy;
+
+// 	A.read(tmp);
+// 	my_x.ui = tmp.data;
+// 	A.read(tmp);
+// 	my_y.ui = tmp.data;
+// 	A.read(tmp);
+// 	my_yaw.ui = tmp.data;
+// 	A.read(tmp);
+// 	target_x0.ui = tmp.data;
+// 	A.read(tmp);
+// 	target_y0.ui = tmp.data;
+// 	A.read(tmp);
+// 	target_vx.ui = tmp.data;
+// 	A.read(tmp);
+// 	target_vy.ui = tmp.data;
+
+// 	float dir_x = cosf(my_yaw.f) * -1;
+// 	float dir_y = sinf(my_yaw.f) * -1;
+
+// 	float d_x = my_x.f - target_x0.f;
+// 	float d_y = my_y.f - target_y0.f;
+
+// 	float donom = target_vx.f * dir_y - target_vy.f * dir_x;
+// 	uint8_t isin_donom = (1 < fabs(donom) / LPTOMASCUDA_EPSIRON)? 1:0;
+// 	donom = isin_donom * donom + (1 - isin_donom) * 1;
+
+// 	float u = (d_x * dir_y - d_y * dir_x) / donom;
+// 	uint8_t isin_u = ((0 <= u)? 1:0) &  ((u <= 1)? 1:0);
+
+// 	Float2Int_t t;
+// 	t.f = (target_vx.f * d_y - target_vy.f * d_x) / donom;
+
+// 	t.f = isin_donom * t.f;
+// 	t.f = isin_u * t.f;
+// 	tmp.data = t.ui;
+// 	B.write(tmp);
+// }
