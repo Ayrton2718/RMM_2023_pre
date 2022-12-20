@@ -39,7 +39,7 @@ $(info TARGET = $(TARGET))
 ifeq ($(BUILD_MODE),Debug)
 CFLAGS += -g
 else
-CFLAGS += -O2
+# CFLAGS += -O2
 endif
 
 

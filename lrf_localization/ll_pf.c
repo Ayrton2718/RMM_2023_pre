@@ -100,6 +100,10 @@ static void LLPf_culcWeight(LLPf_t obj, LLScanType_t* scan)
         SATime_timer_t tim;
         SATime_timerStart(&tim);
         LLScanType_t sim_scan = LLTomas_simulateRange(_obj->tomas, _obj->node[i].pos.x, _obj->node[i].pos.y, _obj->node[i].pos.yaw, scan);
+        if(i == 0)
+        {
+            // LLScanType_show(&sim_scan);
+        }
         sum += SATime_timerGetUs(&tim);
         
         size_t contain_count = 0;

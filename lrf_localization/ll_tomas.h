@@ -4,6 +4,8 @@
 #include "ll_type.h"
 #include "ll_scan_type.h"
 
+#define ENABLE_FPGA
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -21,7 +23,13 @@ void LLTomas_drawBox(LLTomas_t obj, float x0, float y0, float half_width, float 
 
 LLScanType_t LLTomas_virtualScan(LLTomas_t obj, float x0, float y0, float theta, float angle_increment, float angle_from, float angle1_to);
 
+#ifdef ENABLE_FPGA
+void LLTomas_init(void);
+
 LLScanType_t LLTomas_simulateRange(LLTomas_t obj, float x0, float y0, float theta, LLScanType_t* scan);
+#else /*ENABLE_FPGA*/
+LLScanType_t LLTomas_simulateRange(LLTomas_t obj, float x0, float y0, float theta, LLScanType_t* scan);
+#endif /*ENABLE_FPGA*/
 
 #ifdef __cplusplus
 }
