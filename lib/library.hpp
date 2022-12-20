@@ -5,6 +5,7 @@
 #include <std_api/std_api.h>
 #include <object_parser/object_parser.h>
 #include <process_comm/process_comm.h>
+#include <collection_class/collection_class.h>
 
 // for c++
 #ifdef __cplusplus

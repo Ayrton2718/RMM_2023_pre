@@ -7,6 +7,7 @@
 #include "ll_timer.h"
 #include "ll_tomas.h"
 
+
 using namespace odom_driver;
 
 namespace lrf_localization
@@ -30,14 +31,11 @@ void LocalLrf::LocalLrf_cons(const LocalLrfParam_t* param)
 #endif /*LL_LRF_SIM*/
 
     this->m_tomas = LLTomas_create(this->m_timer);
-    LLTomas_drawLine(this->m_tomas, -5.2, -1.3, -4, -1.3);
-    LLTomas_drawLine(this->m_tomas, -4, -1.3, -4, 0);
-    LLTomas_drawLine(this->m_tomas, -4, 0, 4, 0);
-    LLTomas_drawLine(this->m_tomas, 4, 0, 4, -1.3);
-    LLTomas_drawLine(this->m_tomas, 4, -1.3, 5.2, -1.3);
-    LLTomas_drawLine(this->m_tomas, 5.2, -1.3, 5.2, -2.5);
-    LLTomas_drawLine(this->m_tomas, 5.2, -2.5, -5.2, -2.5);
-    LLTomas_drawLine(this->m_tomas, -5.2, -2.5, -5.2, -1.3);
+    LLTomas_drawBox(this->m_tomas, 0,      2, 0.175, 0.175);
+    LLTomas_drawBox(this->m_tomas, 2.5,    2, 0.175, 0.175);
+    LLTomas_drawBox(this->m_tomas, -2.5,   2, 0.175, 0.175);
+    LLTomas_drawBox(this->m_tomas, 1.5,    4, 0.175, 0.175);
+    LLTomas_drawBox(this->m_tomas, -1.5,   4, 0.175, 0.175);
 
     LLType_pos_t pos;
     pos.x = param->init_x;
@@ -52,6 +50,29 @@ void LocalLrf::LocalLrf_cons(const LocalLrfParam_t* param)
     this->m_befo_wheel.theta = 0;
     this->m_local.LocalWheel_cons(&param->wheel_param);
 #else
+    this->m_wm = WMGl_create("127.0.0.1", 3003, 12.3, 9.65);
+    WMGl_layer_t bg = WMGl_createLayer(this->m_wm);
+
+    WMGl_vector_t vertex1[] = {{-5.2, -1.3}, {-5.2, -2.5}, {-4, -2.5}, {-4, -1.3}, {-5.2, -1.3}};
+    WMGl_addLine(bg, {0, 0, 255}, vertex1, 5);
+    WMGl_vector_t vertex2[] = {{4, -1.3}, {4, -2.5}, {5.2, -2.5}, {5.2,  -1.3}, {4, -1.3}};
+    WMGl_addLine(bg, {0, 0, 255}, vertex2, 5);
+    WMGl_vector_t vertex3[] = {{-4, 9.5}, {4, 9.5}, {4, 0}, {-4, 0}, {-4, 9.5}};
+    WMGl_addLine(bg, {0, 0, 255}, vertex3, 5);
+    WMGl_vector_t vertex4[] = {{-4, 0}, {4, 0}, {4, -2.5}, {-4, -2.5}, {-4, 0}};
+    WMGl_addLine(bg, {0, 0, 255}, vertex4, 5);
+
+    WMGl_vector_t vertex5[] = {{0-0.175, 2-0.175}, {0-0.175, 2+0.175}, {0+0.175, 2+0.175}, {0+0.175, 2-0.175}, {0-0.175, 2-0.175}};
+    WMGl_addLine(bg, {0, 255, 0}, vertex5, 5);
+    WMGl_vector_t vertex6[] = {{2.5-0.175, 2-0.175}, {2.5-0.175, 2-0+0.175}, {2.5+0.175, 2+0.175}, {2.5+0.175, 2-0.175}, {2.5-0.175, 2-0.175}};
+    WMGl_addLine(bg, {0, 255, 0}, vertex6, 5);
+    WMGl_vector_t vertex7[] = {{-2.5-0.175, 2-0.175}, {-2.5-0.175, 2+0.175}, {-2.5+0.175, 2+0.175}, {-2.5+0.175, 2-0.175}, {-2.5-0.175, 2-0.175}};
+    WMGl_addLine(bg, {0, 255, 0}, vertex7, 5);
+    WMGl_vector_t vertex8[] = {{1.5-0.175, 4-0.175}, {1.5-0.175, 4+0.175}, {1.5+0.175, 4+0.175}, {1.5+0.175, 4-0.175}, {1.5-0.175, 4-0.175}};
+    WMGl_addLine(bg, {0, 255, 0}, vertex8, 5);
+    WMGl_vector_t vertex9[] = {{-1.5-0.175, 4-0.175}, {-1.5-0.175, 4+0.175}, {-1.5+0.175, 4+0.175}, {-1.5+0.175, 4-0.175}, {-1.5-0.175, 4-0.175}};
+    WMGl_addLine(bg, {0, 255, 0}, vertex9, 5);
+    WMGl_render(this->m_wm, 0, bg);
     // this->m_map = LLMap_create(10.7, 12.3, 5.35, 9.65);
 
     // LLMap_addRectangle(this->m_map, -4, 9.5, 4, 0, 0.02, LLMap_writeType_Support);
@@ -121,15 +142,92 @@ void LocalLrf::run(void)
     LLType_pos_t now_pos = LLHistory_calcPos(this->m_history);
     SALOCKER_UNLOCK(&this->m_locker);
 
-    LLScanType_t scan = LLTomas_virtualScan(this->m_virtual_tomas, real_pos.x, real_pos.y, real_pos.yaw, 1, M_PI / 2, M_PI * 3 / 2);
+    LLScanType_t scan = LLTomas_virtualScan(this->m_virtual_tomas, real_pos.x, real_pos.y, real_pos.yaw, 1, 0, M_PI);
 
     LLType_pos_t delta = {0, 0, 0};
-    // LLMap_t map = LLMap_copy(this->m_map);
-    // LLMap_writeScan(map, real_pos.x, real_pos.y, real_pos.yaw, scan, LLMap_writeType_Laser);
-    // LLMap_addDot(map, real_pos.x, real_pos.y, LLMap_writeType_Support);
-    // LLMap_addDot(map, now_pos.x, now_pos.y, LLMap_writeType_Object);
-    // LLMap_show(map, "map", &delta);
-    // LLMap_destructor(map);
+
+    WMGl_layer_t layer = WMGl_createLayer(this->m_wm);
+    size_t len = LLScanType_count(&scan);
+    for(size_t i = 0; i < len; i++)
+    {
+        float angle = LLScanType_getRad(&scan, i);
+        float dist = LLScanType_getDist(&scan, i);
+
+
+        float tar_x = real_pos.x + dist * cosf(angle - real_pos.yaw);
+        float tar_y = real_pos.y + dist * sinf(angle - real_pos.yaw);
+
+        WMGl_vector_t vertex[2] = {{real_pos.x, real_pos.y}, {tar_x, tar_y}};
+        WMGl_addLine(layer, {255, 0, 0}, vertex, 2);
+    }
+    WMGl_render(this->m_wm, 1, layer);
+
+    CCAutoRelease_startScope();
+    {
+        CC_obj key_obj = WMGl_getKey(this->m_wm, 100);
+        if(CCObject_isObject(key_obj) == SABOOL_TRUE)
+        {
+            CCAutoRelease_add(key_obj);
+            if(CCString_compare(key_obj, "KeyW") == 0){
+                delta.y += 0.05;
+            }else if(CCString_compare(key_obj, "KeyS") == 0){
+                delta.y -= 0.05;
+            }else if(CCString_compare(key_obj, "KeyA") == 0){
+                delta.x -= 0.05;
+            }else if(CCString_compare(key_obj, "KeyD") == 0){
+                delta.x += 0.05;
+            }else if(CCString_compare(key_obj, "KeyE") == 0){
+                delta.yaw += 5 * M_PI / 180;
+            }else if(CCString_compare(key_obj, "KeyQ") == 0){
+                delta.yaw -= 5 * M_PI / 180;
+            }
+
+            CC_obj bin = CCAutoRelease_add(CCJsonSerializer_dump(key_obj, SABOOL_FALSE));
+            SALOG_INFO("key_obj", "%s", CCBinary_getRaw(bin));
+        }
+    }
+    CCAutoRelease_doneScope();
+
+    //  switch(key)
+//     {
+//     case 119:
+//         SALOG_INFO("ll_map", "Up");
+//         pos->y += 0.05;
+//         break;
+    
+//     case 115:
+//         SALOG_INFO("ll_map", "Down");
+//         pos->y -= 0.05;
+//         break;
+
+//     case 100:
+//         SALOG_INFO("ll_map", "Left");
+//         pos->x += 0.05;
+//         break;
+
+//     case 97:
+//         SALOG_INFO("ll_map", "Right");
+//         pos->x -= 0.05;
+//         break;
+
+//     case 101:
+//         SALOG_INFO("ll_map", "turnR");
+//         pos->yaw += 5 * M_PI / 180;
+//         break;
+
+//     case 113:
+//         SALOG_INFO("ll_map", "turnL");
+//         pos->yaw -= 5 * M_PI / 180;
+//         break;
+
+//     case 27:
+//         exit(0);
+//         break;
+
+//     default:
+//         SALOG_INFO("ll_map", "%d", key);
+//         break;
+//     }
 
     real_pos.x += delta.x;
     real_pos.y += delta.y;

@@ -4,6 +4,8 @@
 #include "system/sa_type.h"
 
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <netinet/ip.h> 
 
 #ifdef __cplusplus
 extern "C" {

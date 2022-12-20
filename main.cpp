@@ -1,6 +1,8 @@
 #include "lib/library.hpp"
 #include "pkg/package.hpp"
+
 #include "lrf_localization/ll_local_lrf.hpp"
+#include "webgl_map/wm_gl.h"
 
 int main(void)
 {
