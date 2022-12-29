@@ -2,35 +2,33 @@
 #define PC_MDNS_H
 
 #include "pc_type.h"
-#include <std_api/std_api.h>
+#include "pc_table.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef void* PCMdns_register_t;
+void PCMdns_init(void);
 
 typedef enum
 {
-    PCMdns_protocol_Udp,
-    PCMdns_protocol_Tcp
-} PCMdns_protocol_t;
+    PCMdnsProt_Ipv4Udp,
+    PCMdnsProt_Ipv6Udp,
+    PCMdnsProt_Ipv4Tcp,
+    PCMdnsProt_Ipv6Tcp
+} PCMdnsProt_t;
 
-typedef struct
-{
-    struct sockaddr_in addr;
-} PCMdns_server_t;
+int PCMdns_createSocket(PCMdnsProt_t protocol, struct sockaddr_in* addr_out);
 
 
-int PCMdns_createSocket(PCMdns_protocol_t protocol, struct sockaddr_in* addr_out);
+typedef void* PCMdnsRegister_t;
 
-// PCMdns_register_t PCMdns_registServer(int sock, const struct sockaddr_in* addr_in, PCMdns_protocol_t protocol, const char* service_name, const char* name, CC_obj param);
-// void PCMdns_close(PCMdns_register_t service);
+PCMdnsRegister_t PCMdnsRegister_create(int sock, const struct sockaddr_in* addr_in, const char* service_name, const char* name);
+void PCMdnsRegister_close(PCMdnsRegister_t service);
 
-// SABool_t PCMdns_browseServer(PCMdns_protocol_t protocol, const char* service_name, const char* name, PCMdns_server_t* res);
-// SABuffer_t PCMdns_browseServerAll(PCMdns_protocol_t protocol, const char* service_name, const char* name);
 
-// void PCMdns_sendtoServer(int sock, PCMdns_server_t server);
+// PCTable_info_t PCMdnsServer_browse(const char* service_name, const char* name);
+// void PCMdnsServer_sendto(int sock, PCTable_info_t server, const void *buf, size_t len);
 
 #ifdef __cplusplus
 }

@@ -1,16 +1,18 @@
-#ifndef PC_SERVER_H
-#define PC_SERVER_H
+// #ifndef PC_SERVER_H
+// #define PC_SERVER_H
 
-#include "pc_type.h"
+// #include <thread_comm/thread_comm.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #include "pc_type.h"
 
-// void PCServer_init(void);
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
-#ifdef __cplusplus
-}
-#endif
+// void PCServer_init(const char* name);
 
-#endif /*PC_SERVER_H*/
+// #ifdef __cplusplus
+// }
+// #endif
+
+// #endif /*PC_SERVER_H*/

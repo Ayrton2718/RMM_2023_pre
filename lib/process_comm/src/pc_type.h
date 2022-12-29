@@ -1,6 +1,8 @@
 #ifndef PC_TYPE_H
 #define PC_TYPE_H
 
+// #include <thread_comm/thread_comm.h>
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>

@@ -153,7 +153,7 @@ void RMM3508_setCoef(size_t gw_id, int number, float p, float i, float d)
     pid_conf.i = (uint32_t)(i * 10000);
     pid_conf.d = (uint32_t)(d * 10000);
 
-    int sock = PCMdns_createSocket(PCMdns_protocol_Udp, NULL);
+    int sock = PCMdns_createSocket(PCMdnsProt_Ipv4Udp, NULL);
 #ifdef __APPLE__
     struct timeval tv = {.tv_sec = 1, .tv_usec = 0};
     // tv.tv_sec = 1
@@ -212,7 +212,7 @@ void RMM3508_setAdvancedCoef(size_t gw_id, int number, float p, float i, float d
         adv_conf.inverse = -1;
     }
 
-    int sock = PCMdns_createSocket(PCMdns_protocol_Udp, NULL);
+    int sock = PCMdns_createSocket(PCMdnsProt_Ipv4Udp, NULL);
 #ifdef __APPLE__
     struct timeval tv = {.tv_sec = 1, .tv_usec = 0};
     // tv.tv_sec = 1

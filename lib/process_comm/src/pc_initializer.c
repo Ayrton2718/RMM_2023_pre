@@ -4,6 +4,7 @@
 #include "pc_client.h"
 #include "pc_server.h"
 #include "pc_mdns.h"
+#include "pc_table.h"
 
 #include <limits.h>
 #include <unistd.h>
@@ -17,11 +18,10 @@
 
 void PCInitializer_init(const char* server_name)
 {
-    // TCDirectory_mkdir("/", "process_comm");
-    // TCDirectory_mkdir("process_comm", "my_servers");
-    // TCDirectory_mkobj("process_comm/my_servers", "name", CCString_create(server_name));
+    PCTable_init();
 
-    // PCServer_init();
-    // PCClient_init();
+    PCMdns_init();
+
+    // PCServer_init(server_name);
     // PCClient_init();
 }
