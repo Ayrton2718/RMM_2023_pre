@@ -44,14 +44,40 @@ LLPf_t LLPf_create(const LLType_pos_t* init_pos, LLTomas_t tomas)
 }
 
 
+static const double k = 0.999;
+static double filt_sum = 15116.954230;
+static double filt_setNode = 15.640769;
+static double filt_culcWeight = 15083.911654;
+static double filt_estimate = 13.338557;
+static double filt_resampling = 2.974673;
+
 LLType_pos_t LLPf_predict(LLPf_t obj, const LLType_pos_t* d_move, LLScanType_t* scan)
 {
+    SATime_timer_t tim_sum;
+    SATime_timer_t tim;
+
+    SATime_timerStart(&tim);
     LLPf_setNode(obj, d_move);
+    filt_setNode = filt_setNode * k + SATime_timerGetUs(&tim) * (1-k);
+
+    SATime_timerStart(&tim);
     LLPf_culcWeight(obj, scan);
+    filt_culcWeight = filt_culcWeight * k + SATime_timerGetUs(&tim) * (1-k);
 
+    SATime_timerStart(&tim);
     LLType_pos_t pos = LLPf_estimate(obj);
+    filt_estimate = filt_estimate * k + SATime_timerGetUs(&tim) * (1-k);
 
+    SATime_timerStart(&tim);
     LLPf_resampling(obj);
+    filt_resampling = filt_resampling * k + SATime_timerGetUs(&tim) * (1-k);
+
+    filt_sum = filt_sum * k + SATime_timerGetUs(&tim_sum) * (1-k);
+
+    SALOG_INFO("tmp", "sum: %lf",  filt_sum);
+    SALOG_INFO("tmp", "setNode: %lf", filt_setNode);
+    SALOG_INFO("tmp", "culcWeight: %lf", filt_culcWeight + filt_estimate);
+    SALOG_INFO("tmp", "resampling: %lf", filt_resampling);
 
     return pos;
 }
@@ -79,6 +105,11 @@ static void LLPf_setNode(LLPf_t obj, const LLType_pos_t* d_move)
     }
 }
 
+// static const double k = 0.999;
+// static double filt_sum = 11923;
+// static double filt_tomas = 11291;
+// static double filt_normal = 605;
+
 static void LLPf_culcWeight(LLPf_t obj, LLScanType_t* scan)
 {
     LLPf_info_t* _obj = (LLPf_info_t*)obj;
@@ -94,18 +125,22 @@ static void LLPf_culcWeight(LLPf_t obj, LLScanType_t* scan)
     // // LLScanType_destructor(&a);
     // LLScanType_destructor(&b);
 
-    uint64_t sum = 0;
+    SATime_timer_t tim;
+    SATime_timerStart(&tim);
+
+    uint64_t tomas_sum = 0;
+    uint64_t normal_sum = 0;
     for(size_t i = 0; i < LLPF_NODE_COUNT; i++)
     {
-        SATime_timer_t tim;
-        SATime_timerStart(&tim);
+        uint64_t tomas_start_tim = SATime_timerGetUs(&tim);
         LLScanType_t sim_scan = LLTomas_simulateRange(_obj->tomas, _obj->node[i].pos.x, _obj->node[i].pos.y, _obj->node[i].pos.yaw, scan);
         if(i == 0)
         {
             // LLScanType_show(&sim_scan);
         }
-        sum += SATime_timerGetUs(&tim);
+        tomas_sum += (SATime_timerGetUs(&tim) - tomas_start_tim);
         
+        uint64_t normal_start_tim = SATime_timerGetUs(&tim);
         size_t contain_count = 0;
         float diff_sum = 0;
         size_t angle_count = LLScanType_count(scan);
@@ -170,9 +205,16 @@ static void LLPf_culcWeight(LLPf_t obj, LLScanType_t* scan)
         weight_sum += weight;
 
         LLScanType_destructor(&sim_scan);
+        normal_sum += (SATime_timerGetUs(&tim) - normal_start_tim);
     }
 
-    SALOG_INFO("tmp", "%d", sum);
+    // filt_sum = filt_sum * k + SATime_timerGetUs(&tim) * (1-k);
+    // filt_tomas = filt_tomas * k + tomas_sum * (1-k);
+    // filt_normal = filt_normal * k + normal_sum * (1-k);
+
+    // SALOG_INFO("tmp", "sum: %lf", filt_sum);
+    // SALOG_INFO("tmp", "tomas: %lf", filt_tomas);
+    // SALOG_INFO("tmp", "normal: %lf", filt_normal);
 
     for(size_t node_i = 0; node_i < LLPF_NODE_COUNT; node_i++)
     {
@@ -197,7 +239,7 @@ static void LLPf_resampling(LLPf_t obj)
     // CCLOG_INFO("%f", ess);
     // SALOG_INFO("lrf_localization", "%f", LLPF_NODE_COUNT / ess);
 
-    if(ess < (LLPF_NODE_COUNT / (float)1.5))
+    // if(ess < (LLPF_NODE_COUNT / (float)1.5))
     {
         // LLType_pos_t befo_nodes[LLPF_NODE_COUNT];
         // float befo_weight[LLPF_NODE_COUNT];

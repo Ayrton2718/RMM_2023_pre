@@ -50,29 +50,30 @@ void LocalLrf::LocalLrf_cons(const LocalLrfParam_t* param)
     this->m_befo_wheel.theta = 0;
     this->m_local.LocalWheel_cons(&param->wheel_param);
 #else
-    this->m_wm = WMGl_create("10.42.0.1", 3003, 12.3, 9.65);
-    WMGl_layer_t bg = WMGl_createLayer(this->m_wm);
+    // this->m_wm = WMGl_create("10.42.0.1", 3003, 12.3, 9.65);
+    // WMGl_layer_t bg = WMGl_createLayer(this->m_wm);
 
-    WMGl_vector_t vertex1[] = {{-5.2, -1.3}, {-5.2, -2.5}, {-4, -2.5}, {-4, -1.3}, {-5.2, -1.3}};
-    WMGl_addLine(bg, {0, 0, 255}, vertex1, 5);
-    WMGl_vector_t vertex2[] = {{4, -1.3}, {4, -2.5}, {5.2, -2.5}, {5.2,  -1.3}, {4, -1.3}};
-    WMGl_addLine(bg, {0, 0, 255}, vertex2, 5);
-    WMGl_vector_t vertex3[] = {{-4, 9.5}, {4, 9.5}, {4, 0}, {-4, 0}, {-4, 9.5}};
-    WMGl_addLine(bg, {0, 0, 255}, vertex3, 5);
-    WMGl_vector_t vertex4[] = {{-4, 0}, {4, 0}, {4, -2.5}, {-4, -2.5}, {-4, 0}};
-    WMGl_addLine(bg, {0, 0, 255}, vertex4, 5);
+    // WMGl_vector_t vertex1[] = {{-5.2, -1.3}, {-5.2, -2.5}, {-4, -2.5}, {-4, -1.3}, {-5.2, -1.3}};
+    // WMGl_addLine(bg, {0, 0, 255}, vertex1, 5);
+    // WMGl_vector_t vertex2[] = {{4, -1.3}, {4, -2.5}, {5.2, -2.5}, {5.2,  -1.3}, {4, -1.3}};
+    // WMGl_addLine(bg, {0, 0, 255}, vertex2, 5);
+    // WMGl_vector_t vertex3[] = {{-4, 9.5}, {4, 9.5}, {4, 0}, {-4, 0}, {-4, 9.5}};
+    // WMGl_addLine(bg, {0, 0, 255}, vertex3, 5);
+    // WMGl_vector_t vertex4[] = {{-4, 0}, {4, 0}, {4, -2.5}, {-4, -2.5}, {-4, 0}};
+    // WMGl_addLine(bg, {0, 0, 255}, vertex4, 5);
 
-    WMGl_vector_t vertex5[] = {{0-0.175, 2-0.175}, {0-0.175, 2+0.175}, {0+0.175, 2+0.175}, {0+0.175, 2-0.175}, {0-0.175, 2-0.175}};
-    WMGl_addLine(bg, {0, 255, 0}, vertex5, 5);
-    WMGl_vector_t vertex6[] = {{2.5-0.175, 2-0.175}, {2.5-0.175, 2-0+0.175}, {2.5+0.175, 2+0.175}, {2.5+0.175, 2-0.175}, {2.5-0.175, 2-0.175}};
-    WMGl_addLine(bg, {0, 255, 0}, vertex6, 5);
-    WMGl_vector_t vertex7[] = {{-2.5-0.175, 2-0.175}, {-2.5-0.175, 2+0.175}, {-2.5+0.175, 2+0.175}, {-2.5+0.175, 2-0.175}, {-2.5-0.175, 2-0.175}};
-    WMGl_addLine(bg, {0, 255, 0}, vertex7, 5);
-    WMGl_vector_t vertex8[] = {{1.5-0.175, 4-0.175}, {1.5-0.175, 4+0.175}, {1.5+0.175, 4+0.175}, {1.5+0.175, 4-0.175}, {1.5-0.175, 4-0.175}};
-    WMGl_addLine(bg, {0, 255, 0}, vertex8, 5);
-    WMGl_vector_t vertex9[] = {{-1.5-0.175, 4-0.175}, {-1.5-0.175, 4+0.175}, {-1.5+0.175, 4+0.175}, {-1.5+0.175, 4-0.175}, {-1.5-0.175, 4-0.175}};
-    WMGl_addLine(bg, {0, 255, 0}, vertex9, 5);
-    WMGl_render(this->m_wm, 0, bg);
+    // WMGl_vector_t vertex5[] = {{0-0.175, 2-0.175}, {0-0.175, 2+0.175}, {0+0.175, 2+0.175}, {0+0.175, 2-0.175}, {0-0.175, 2-0.175}};
+    // WMGl_addLine(bg, {0, 255, 0}, vertex5, 5);
+    // WMGl_vector_t vertex6[] = {{2.5-0.175, 2-0.175}, {2.5-0.175, 2-0+0.175}, {2.5+0.175, 2+0.175}, {2.5+0.175, 2-0.175}, {2.5-0.175, 2-0.175}};
+    // WMGl_addLine(bg, {0, 255, 0}, vertex6, 5);
+    // WMGl_vector_t vertex7[] = {{-2.5-0.175, 2-0.175}, {-2.5-0.175, 2+0.175}, {-2.5+0.175, 2+0.175}, {-2.5+0.175, 2-0.175}, {-2.5-0.175, 2-0.175}};
+    // WMGl_addLine(bg, {0, 255, 0}, vertex7, 5);
+    // WMGl_vector_t vertex8[] = {{1.5-0.175, 4-0.175}, {1.5-0.175, 4+0.175}, {1.5+0.175, 4+0.175}, {1.5+0.175, 4-0.175}, {1.5-0.175, 4-0.175}};
+    // WMGl_addLine(bg, {0, 255, 0}, vertex8, 5);
+    // WMGl_vector_t vertex9[] = {{-1.5-0.175, 4-0.175}, {-1.5-0.175, 4+0.175}, {-1.5+0.175, 4+0.175}, {-1.5+0.175, 4-0.175}, {-1.5-0.175, 4-0.175}};
+    // WMGl_addLine(bg, {0, 255, 0}, vertex9, 5);
+    // WMGl_render(this->m_wm, 0, bg);
+    
     // this->m_map = LLMap_create(10.7, 12.3, 5.35, 9.65);
 
     // LLMap_addRectangle(this->m_map, -4, 9.5, 4, 0, 0.02, LLMap_writeType_Support);
@@ -146,47 +147,47 @@ void LocalLrf::run(void)
 
     LLType_pos_t delta = {0, 0, 0};
 
-    WMGl_layer_t layer = WMGl_createLayer(this->m_wm);
-    size_t len = LLScanType_count(&scan);
-    for(size_t i = 0; i < len; i++)
-    {
-        float angle = LLScanType_getRad(&scan, i);
-        float dist = LLScanType_getDist(&scan, i);
+    // WMGl_layer_t layer = WMGl_createLayer(this->m_wm);
+    // size_t len = LLScanType_count(&scan);
+    // for(size_t i = 0; i < len; i++)
+    // {
+    //     float angle = LLScanType_getRad(&scan, i);
+    //     float dist = LLScanType_getDist(&scan, i);
 
 
-        float tar_x = real_pos.x + dist * cosf(angle - real_pos.yaw);
-        float tar_y = real_pos.y + dist * sinf(angle - real_pos.yaw);
+    //     float tar_x = real_pos.x + dist * cosf(angle - real_pos.yaw);
+    //     float tar_y = real_pos.y + dist * sinf(angle - real_pos.yaw);
 
-        WMGl_vector_t vertex[2] = {{real_pos.x, real_pos.y}, {tar_x, tar_y}};
-        WMGl_addLine(layer, {255, 0, 0}, vertex, 2);
-    }
-    WMGl_render(this->m_wm, 1, layer);
+    //     WMGl_vector_t vertex[2] = {{real_pos.x, real_pos.y}, {tar_x, tar_y}};
+    //     WMGl_addLine(layer, {255, 0, 0}, vertex, 2);
+    // }
+    // WMGl_render(this->m_wm, 1, layer);
 
-    CCAutoRelease_startScope();
-    {
-        CC_obj key_obj = WMGl_getKey(this->m_wm, 100);
-        if(CCObject_isObject(key_obj) == SABOOL_TRUE)
-        {
-            CCAutoRelease_add(key_obj);
-            if(CCString_compare(key_obj, "KeyW") == 0){
-                delta.y += 0.05;
-            }else if(CCString_compare(key_obj, "KeyS") == 0){
-                delta.y -= 0.05;
-            }else if(CCString_compare(key_obj, "KeyA") == 0){
-                delta.x -= 0.05;
-            }else if(CCString_compare(key_obj, "KeyD") == 0){
-                delta.x += 0.05;
-            }else if(CCString_compare(key_obj, "KeyE") == 0){
-                delta.yaw += 5 * M_PI / 180;
-            }else if(CCString_compare(key_obj, "KeyQ") == 0){
-                delta.yaw -= 5 * M_PI / 180;
-            }
+    // CCAutoRelease_startScope();
+    // {
+    //     CC_obj key_obj = WMGl_getKey(this->m_wm, 100);
+    //     if(CCObject_isObject(key_obj) == SABOOL_TRUE)
+    //     {
+    //         CCAutoRelease_add(key_obj);
+    //         if(CCString_compare(key_obj, "KeyW") == 0){
+    //             delta.y += 0.05;
+    //         }else if(CCString_compare(key_obj, "KeyS") == 0){
+    //             delta.y -= 0.05;
+    //         }else if(CCString_compare(key_obj, "KeyA") == 0){
+    //             delta.x -= 0.05;
+    //         }else if(CCString_compare(key_obj, "KeyD") == 0){
+    //             delta.x += 0.05;
+    //         }else if(CCString_compare(key_obj, "KeyE") == 0){
+    //             delta.yaw += 5 * M_PI / 180;
+    //         }else if(CCString_compare(key_obj, "KeyQ") == 0){
+    //             delta.yaw -= 5 * M_PI / 180;
+    //         }
 
-            CC_obj bin = CCAutoRelease_add(CCJsonSerializer_dump(key_obj, SABOOL_FALSE));
-            SALOG_INFO("key_obj", "%s", CCBinary_getRaw(bin));
-        }
-    }
-    CCAutoRelease_doneScope();
+    //         CC_obj bin = CCAutoRelease_add(CCJsonSerializer_dump(key_obj, SABOOL_FALSE));
+    //         SALOG_INFO("key_obj", "%s", CCBinary_getRaw(bin));
+    //     }
+    // }
+    // CCAutoRelease_doneScope();
 
     real_pos.x += delta.x;
     real_pos.y += delta.y;

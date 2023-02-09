@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdint.h>
-#include <pynq_api.h>
 
+#ifdef ENABLE_FPGA
+#include <pynq_api.h>
+#endif /*ENABLE_FPGA*/
 
 #ifndef M_PI
 #define M_PI 3.14159263

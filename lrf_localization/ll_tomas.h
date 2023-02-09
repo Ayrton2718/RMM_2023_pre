@@ -4,7 +4,7 @@
 #include "ll_type.h"
 #include "ll_scan_type.h"
 
-#define ENABLE_FPGA
+// #define ENABLE_FPGA
 
 #ifdef __cplusplus
 extern "C" {

@@ -13,8 +13,8 @@ CPPFLAGS += $(shell pkg-config YDLIDAR_SDK --cflags)
 CPPFLAGS += -std=c++11
 else
 LFLAGS += $(shell pkg-config opencv4 --libs)
-LFLAGS += -lpynq
-LFLAGS += -lcma
+# LFLAGS += -lpynq
+# LFLAGS += -lcma
 CPPFLAGS += $(shell pkg-config opencv4 --cflags)
 CPPFLAGS += -std=c++11
 CFLAGS += -DLL_LRF_SIM
